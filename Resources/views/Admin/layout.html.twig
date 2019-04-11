@@ -1,0 +1,17 @@
+{% extends '@OctopouceAdmin/layout.html.twig' %}
+
+{% trans_default_domain 'shop' %}
+
+{% if form is defined %}
+    {% form_theme form '@OctopouceAdmin/Form/layout.html.twig' %}
+{% endif %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/octopouceshop/css/shop.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/octopouceshop/js/shop.js') }}"></script>
+{% endblock %}

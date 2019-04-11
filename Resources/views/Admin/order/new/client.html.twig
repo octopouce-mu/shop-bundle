@@ -1,0 +1,35 @@
+<div class="box">
+    <div class="content">
+        <p>
+            <b>E-mail</b><br>
+            <a href="mailto:{{ order.user.email }}"><i class="far fa-envelope"></i> {{ order.user.email }}</a>
+        </p>
+        <p>
+            <b>Type</b><br>
+            {{ order.user.type|trans }}
+        </p>
+        <p>
+            <b>Compte créé</b><br>
+            {{ order.user.createdAt|date('d/m/Y H:i:s') }}
+        </p>
+    </div>
+</div>
+
+<ul class="tabs transparent">
+    <li class="tab col s6"><a href="#billing" class="active">Adresse de facturation</a></li>
+    <li class="tab col s6"><a href="#shipment">Adresse de livraison</a></li>
+</ul>
+<div id="billing">
+    <div class="box">
+        <div class="content">
+            {{ form_widget(form.billing) }}
+        </div>
+    </div>
+</div>
+<div id="shipment">
+    <div class="box">
+        <div class="content">
+            {{ form_widget(form.shipment) }}
+        </div>
+    </div>
+</div>

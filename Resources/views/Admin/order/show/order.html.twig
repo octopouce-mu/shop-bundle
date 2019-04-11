@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col s12">
+        <div class="box">
+            <div class="title">
+                État
+            </div>
+            <div class="content">
+                <div class="row">
+                    {{ form_start(formState) }}
+                    <div class="col s9">
+                        {{ form_widget(formState.state) }}
+                    </div>
+                    <div class="col s3 right-align">
+                        <button type="submit" class="waves-effect waves-light btn green" >Mettre à jour l'état</button>
+                    </div>
+                    {{ form_end(formState) }}
+                </div>
+                <table>
+                    <tbody>
+                    {% for orderState in order.states %}
+                        <tr {% if orderState.state.paid %}class="green"{% endif %}>
+                            <td>{{ orderState.state.name|trans }}</td>
+                            <td>{{ orderState.createdAt|date('d/m/Y H:i:s') }}</td>
+                            {#<td class="right"><a href="#" class="waves-effect waves-light btn-small blue">Renvoyer l'email</a></td>#}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {#<div class="box">#}
+            {#<div class="title">#}
+                {#Factures <span class="sup-right"><a href="{{ path('admin_order_show_invoice_new', {'id': order.id}) }}" class="waves-effect waves-light btn-small green white-text" onclick="if (!confirm('Êtes-vous sur de générer une nouvelle facture ?')) { return false }"><i class="fas fa-plus"></i></a></span>#}
+            {#</div>#}
+            {#<div class="content">#}
+                {#{% if order.invoices|length > 0 %}#}
+                {#<table>#}
+                    {#<thead>#}
+                        {#<tr>#}
+                            {#<th>Numéro</th>#}
+                            {#<th>Prix Total</th>#}
+                            {#<th>Créer le</th>#}
+                            {#<th>Payer le</th>#}
+                            {#<th></th>#}
+                        {#</tr>#}
+                    {#</thead>#}
+                    {#<tbody>#}
+                        {#{% for invoice in order.invoices %}#}
+                            {#<tr>#}
+                                {#<td>{{ invoice.number }}</td>#}
+                                {#<td>{{ invoice.priceTotal }} €</td>#}
+                                {#<td>{{ invoice.createdAt|date('d/m/Y H:i:s') }}</td>#}
+                                {#<td>{% if invoice.payIt %}<span class="green">{{ invoice.payIt|date('d/m/Y H:i:s') }}</span>{% endif %}</td>#}
+                                {#<td class="right">#}
+                                    {#<a href="{{ path('admin_order_show_invoice_generate', {'number': order.number, 'id': invoice.id}) }}" class="waves-effect waves-light btn-small blue"><i class="fas fa-download"></i></a>#}
+                                    {#<a href="{{ path('admin_order_show_invoice_send', {'number': order.number, 'id': invoice.id}) }}" class="waves-effect waves-light btn-small orange" onclick="if (!confirm('Êtes-vous sur de renvoyer la facture au client ?')) { return false }" title="Renvoyer la facture"><i class="far fa-envelope"></i></a>#}
+                                {#</td>#}
+                            {#</tr>#}
+                        {#{% endfor %}#}
+                    {#</tbody>#}
+                {#</table>#}
+                {#{% else %}#}
+                    {#<p>La commande n'a pas été payée donc aucune facture n'a été générée.</p>#}
+                {#{% endif %}#}
+            {#</div>#}
+        {#</div>#}
+    </div>
+</div>

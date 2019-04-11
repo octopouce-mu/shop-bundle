@@ -1,0 +1,75 @@
+<div class="top-bar__element shopping-cart top-bar--bg_dark dropdown">
+    <a href="#" onclick="openCartMenu()" class="top-bar__link-btn" role="button" id="dropdownCart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {% if order and order.items|length > 0 %}
+            <span class="txt">
+                {{ itemsInCart }}
+            </span>
+        {% endif %}
+        <i class="shopping-cart__icon iconmoon icon-ico_cart top-bar--content"></i>
+    </a>
+
+    <div class="shopping-cart__dropdown dropdown-menu">
+        {% if order and order.items|length > 0 %}
+            <div class="shopping-cart__dropdown__journals p-28">
+                {% for item in order.items %}
+                    <div id="{{ item.id }}" class="pb-4 pt-4 shopping-cart__dropdown__journals__journal">
+                        <div class="row">
+                            {% if item.journal %}
+                                <div class="col-4 shopping-cart__dropdown__img">
+                                    <div class="bg--grey-light p-15">
+                                        <img src="{{ vich_uploader_asset(item.journal, 'imageFile') }}" alt="Couverture revue n°{{ item.journal.number }}" width="100%">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="col shopping-cart__dropdown__contnet">
+                                <div class="shopping-cart__dropdown__journals__journal__detail">
+                                    {{ render(controller('App\\Controller\\CartController::removeItemForm', {'id':item.id})) }}
+                                    <div class="shopping-cart__dropdown__journals__journal__detail__title">
+                                        {% if item.journal %}
+                                            <p class="color--primary text-uppercase">{{ 'number'|trans }} {{ item.journal.number }}</p>
+                                            <small class=" text-uppercase">{{ item.journal.postedAt|localizeddate('none', 'none', null, null, 'MMMM Y')|capitalize }}</small>
+                                        {% elseif item.subscription %}
+                                            <p class="color--primary text-uppercase pr-5">{{ item.subscription.name }}</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="shopping-cart__dropdown__journals__journal__detail__price">
+                                        {% if item.type == 'print' and item.journal %}
+                                            <p>{{ 'price.unit'|trans }} : <span class="color--secondary">{{ item.price }} €</span></p>
+                                        {% else %}
+                                            <p>{{ 'price.name'|trans }} : <span class="color--secondary">{{ item.price }} €</span></p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="shopping-cart__dropdown__journals__journal__detail__cart">
+                                        <div class="row">
+                                            <div class="col">
+                                                <p>{{ item.type|trans }}</p>
+                                            </div>
+                                            {% if item.type == 'print' and item.journal %}
+                                                <div class="col text-right">
+                                                    {{ render(controller('App\\Controller\\CartController::quantityItemForm', {'id':item.id})) }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="shopping-cart__dropdown__price bg--secondary">
+                <p class="shopping-cart__dropdown__price__total">{{ 'price.total'|trans }} <span class="float-right">{{ order.summary.priceTotal }} €</span></p>
+                <p class="shopping-cart__dropdown__price__tva"><small>* {{ 'price.tva_include'|trans }}</small></p>
+                <hr>
+                <div class="text-center">
+                    <a href="{{ path('cart_index') }}" class="btn btn-primary shopping-cart__dropdown__price__link arrow-right text-center">{{ 'cart.see_my_cart'|trans }}</a>
+                </div>
+            </div>
+        {% else %}
+        <div class="shopping-cart__dropdown__journals shopping-cart__dropdown__nocart p-28">
+            <p>Vous n'avez aucun article dans le panier.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>

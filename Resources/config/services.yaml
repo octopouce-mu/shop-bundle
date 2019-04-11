@@ -1,0 +1,7 @@
+services:
+    Octopouce\ShopBundle\:
+        resource: '../../*'
+        exclude: '../../{DependencyInjection,Entity,Resources}'
+        autowire: true
+        autoconfigure: true
+        public: false

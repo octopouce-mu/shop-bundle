@@ -1,0 +1,53 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'cart.title'|trans }} - RGCF{% endblock %}
+
+{% block body_class %}page-cart{% endblock %}
+
+{% block content %}
+    <div class="breadcrumb confirmation-page">
+        <ul class="resetList">
+            <li><a href="{{ path('homepage') }}"><i class="iconmoon icon-home"></i></a></li>
+            <li>{{ 'cart.title'|trans }}</li>
+            <li>{{ 'cart.checkout'|trans }}</li>
+            <li>{{ 'cart.payment'|trans }}</li>
+            <li class="active">{{ 'cart.confirmed'|trans }}</li>
+        </ul>
+    </div>
+
+    <section class="cart confirm__section bg--secondary">
+        <div class="confirm_icon">
+            <i class="iconmoon icon-ico_tick"></i>
+        </div>
+        <p>
+            Votre commande a bien été prise en compte. Nous vous remercions de votre confiance.
+        </p>
+        <p>
+            Numéro de votre commande : {{ order.number }}
+        </p>
+        {% if order.paymentInstruction.paymentSystemName != 'paybox' %}
+            {% if order.paymentInstruction.paymentSystemName == 'check' %}
+                <p>
+                    Vous avez choisi un paiement par Chèque. La commande sera validée une fois le chèque réceptionné. Envoyez le chèque à cette adresse à l'ordre de Éditions RGRA - RGCF :
+                    <br><br>
+                    Éditions RGRA – RGCF <br>
+                    9 rue de Berri <br>
+                    75008 Paris <br>
+                    France
+                </p>
+            {% elseif order.paymentInstruction.paymentSystemName == 'bank_wire' %}
+                <p>
+                    Vous avez choisi un paiement par Virement bancaire. La commande sera validée une fois le virement réceptionné. Le virement est à faire au bénéfice de :
+                    <br><br>
+                    <b>Titulaire du compte</b> : Éditions RGRA - RGCF <br>
+                    <b>Domiciliation</b> : HSBC <br>
+                    <b>Banque</b> : 30056 <br>
+                    <b>Guichet</b> : 00728 <br>
+                    <b>Compte</b> : 0728 368 3394 <br>
+                    <b>IBAN</b> : FR76 3005 6007 2807 2836 8339 467 <br>
+                    <b>BIC</b> : CCFRFRPP
+                </p>
+            {% endif %}
+        {% endif %}
+    </section>
+{% endblock %}

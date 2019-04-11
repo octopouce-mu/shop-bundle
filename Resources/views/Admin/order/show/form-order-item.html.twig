@@ -1,0 +1,43 @@
+{% extends '@OctopouceAdmin/layout.html.twig' %}
+
+{% form_theme form '@OctopouceAdmin/Form/layout.html.twig' %}
+
+{% block main %}
+    <div class="padding-filter">
+        <div class="row title">
+            <div class="col s12">
+                <h1>Article de la commande {{ entity.order.number }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="box">
+                    <div class="content">
+
+                        {{ form_start(form) }}
+                            <div class="row">
+                                <div class="col s12">
+                                    <ul class="tabs transparent">
+                                        <li class="tab col s3"><a class="active" href="#journal">Journal</a></li>
+                                        <li class="tab col s3"><a class="active" href="#subscription">Abonnement</a></li>
+                                    </ul>
+                                    <div id="journal">
+                                        {{ form_row(form.journal) }}
+                                    </div>
+                                    <div id="subscription">
+                                        {{ form_widget(form.subscription) }}
+                                    </div>
+                                </div>
+                            </div>
+                        {{ form_rest(form) }}
+                        {% if form.submit is not defined %}
+                            <button class="btn">Submit</button>
+                        {% endif %}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

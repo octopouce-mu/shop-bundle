@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col s12">
+        <div class="box">
+            <div class="title">
+                Historiques
+            </div>
+            <div class="content">
+                <table>
+                    <tbody>
+                        {% if cart.billing %}
+                            {% if cart.billing.createdAt|date('U') < cart.updatedAt|date('U') %}
+                                <tr>
+                                    <td>Mis à jour le</td>
+                                    <td>{{ cart.updatedAt|date('d/m/Y H:i:s') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Informations de facturation</td>
+                                    <td>{{ cart.billing.createdAt|date('d/m/Y H:i:s') }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td>Informations de facturation</td>
+                                    <td>{{ cart.billing.createdAt|date('d/m/Y H:i:s') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mis à jour le</td>
+                                    <td>{{ cart.updatedAt|date('d/m/Y H:i:s') }}</td>
+                                </tr>
+                            {% endif %}
+                        {% else %}
+                            <tr>
+                                <td>Mis à jour le</td>
+                                <td>{{ cart.updatedAt|date('d/m/Y H:i:s') }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td>Créer le</td>
+                            <td>{{ cart.createdAt|date('d/m/Y H:i:s') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

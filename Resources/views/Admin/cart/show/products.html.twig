@@ -1,0 +1,48 @@
+<table>
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Prix Unitaire</th>
+            <th>Quantité</th>
+            <th>Type</th>
+            <th>Total</th>
+            <th>Ajouter le</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart.items %}
+            <tr {% if loop.last %}style="border-bottom: none"{% endif %}>
+                <td>
+                    {% if item.journal %}
+                        <a href="{{ path('admin_journal_edit', {'id':item.journal.id}) }}">Numéro {{ item.journal.number }}</a>
+                    {% elseif item.subscription %}
+                        {{ item.subscription.name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ item.price }} €
+                </td>
+                <td>
+                    {{ item.quantity }}
+                </td>
+                <td>
+                    {{ item.type }}
+                </td>
+                <td>
+                    {{ item.priceTotal }} €
+                </td>
+                <td>{{ item.createdAt|date('d/m/Y H:i:s') }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr style="border-top: 1px solid rgba(255, 255, 255, 0.2);">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total</td>
+            <td>{{ cart.priceTotal }} €</td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

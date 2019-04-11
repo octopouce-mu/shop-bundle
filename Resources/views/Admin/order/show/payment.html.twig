@@ -1,0 +1,37 @@
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Moyen de paiement</th>
+            <th>ID de la transaction</th>
+            <th>Montant</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% if order.paymentInstruction and order.paymentInstruction.payments|length > 0  %}
+        {% for payment in order.paymentInstruction.payments|reverse %}
+            {% for transaction in payment.transactions|reverse %}
+                <tr>
+                    <td>{{ transaction.createdAt|date('d/m/Y H:i:s') }}</td>
+                    <td>{{ order.paymentInstruction.paymentSystemName|trans }}</td>
+                    <td>{{ transaction.referenceNumber }} - #{{ transaction.id }}</td>
+                    <td>{{ transaction.requestedAmount|round(2, 'common') }} €</td>
+                    <td>
+                        {% if transaction.responseCode == 'success' %}
+                            <span class="new badge green" data-badge-caption="{{ transaction.responseCode }}">
+                                                </span>
+                        {% elseif transaction.responseCode == 'pending' %}
+                            <span class="new badge blue" data-badge-caption="{{ transaction.responseCode }}">
+                                                </span>
+                        {% else %}
+                            <span class="new badge red" data-badge-caption="{{ transaction.responseCode }}">
+                                                </span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    </tbody>
+</table>

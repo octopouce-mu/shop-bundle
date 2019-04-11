@@ -1,0 +1,51 @@
+<table>
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Prix Unitaire</th>
+            <th>Quantité</th>
+            <th>Type</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order.items %}
+            <tr {% if loop.last %}style="border-bottom: none"{% endif %}>
+                <td>
+                    {% if item.journal %}
+                        <a href="{{ path('admin_journal_edit', {'id':item.journal.id}) }}">Numéro {{ item.journal.number }}</a>
+                    {% elseif item.subscription %}
+                        {{ item.subscription.name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ item.price }} €
+                </td>
+                <td>
+                    {{ item.quantity }}
+                </td>
+                <td>
+                    {{ item.type }}
+                </td>
+                <td>
+                    {{ item.priceTotal }} €
+                </td>
+                <td class="right">
+                    <a href="{{ path('admin_order_item_update', {'number':order.number, 'id':item.id}) }}" class="waves-effect waves-light btn-small orange"><i class="far fa-edit"></i></a>
+                    <a href="{{ path('admin_order_item_delete', {'number':order.number, 'id':item.id}) }}" class="waves-effect waves-light btn-small red" onclick="if (!confirm('Are you sure?')) { return false }"><i class="fas fa-times"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr style="border-top: 1px solid rgba(255, 255, 255, 0.2);">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total</td>
+            <td>{{ order.priceTotal }} €</td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

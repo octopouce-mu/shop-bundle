@@ -1,0 +1,148 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'cart.payment'|trans }} - RGCF{% endblock %}
+
+{% block body_class %}page-cart{% endblock %}
+
+{% block content %}
+    <div class="breadcrumb">
+        <ul class="resetList">
+            <li><a href="{{ path('homepage') }}"><i class="iconmoon icon-home"></i></a></li>
+            <li><a href="{{ path('cart_index') }}">{{ 'cart.title'|trans }}</a></li>
+            <li><a href="{{ path('cart_checkout') }}">{{ 'cart.checkout'|trans }}</a></li>
+            <li class="active">{{ 'cart.payment'|trans }}</li>
+        </ul>
+    </div>
+
+    <section class="cart payment">
+        {{ form_start(form) }}
+        <div class="cart__detail payment__detail bg--grey-light p-45-one">
+            <h1 class="color--primary text-uppercase mb-3">Type de paiement</h1>
+            <div id="jms_choose_payment_method_method">
+                {% for key, choice in form.method.children %}
+                    <div class="form-group method-{{ choice.vars.value }}">
+                        {{ form_widget(choice) }}
+                        {% if choice.vars.value == 'paybox' %}
+                            <div class="pl-5 pr-5 mt-20">
+                                {{ form_widget(form.data_paybox) }}
+                            </div>
+                        {% elseif choice.vars.value == 'check' %}
+                            <div class="pl-5 pr-5 mt-20">
+                                <p class="text--content">À l'ordre de Éditions RGRA - RGCF à réception de facture</p>
+                                {{ form_widget(form.data_check) }}
+                            </div>
+                        {% elseif choice.vars.value == 'bank_wire' %}
+                            <div class="pl-5 pr-5 mt-20">
+                                <p class="text--content margin-btn">
+                                    Titulaire du compte : Éditions RGRA - RGCF
+                                    <br>
+                                    Domiciliation : HSBC
+                                </p>
+                                <div class="row no-gutters">
+                                    <div class="col-4 col-left">
+                                        <p class="bg--secondary payment--text color--white">
+                                            Banque
+                                        </p>
+                                    </div>
+                                    <div class="col col-right">
+                                        <p class="bg--white payment--detail">
+                                            30056
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="col-4 col-left">
+                                        <p class="bg--secondary payment--text color--white">
+                                            Guichet
+                                        </p>
+                                    </div>
+                                    <div class="col col-right">
+                                        <p class="bg--white payment--detail">
+                                            00728
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="col-4 col-left">
+                                        <p class="bg--secondary payment--text color--white">
+                                            Compte
+                                        </p>
+                                    </div>
+                                    <div class="col col-right">
+                                        <p class="bg--white payment--detail">
+                                            0728  368  3394
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="col-4 col-left">
+                                        <p class="bg--secondary payment--text color--white">
+                                            IBAN
+                                        </p>
+                                    </div>
+                                    <div class="col col-right">
+                                        <p class="bg--white payment--detail">
+                                            FR76  3005  6007  2807  2836  8339  467
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="col-4 col-left">
+                                        <p class="bg--secondary payment--text color--white">
+                                            BIC
+                                        </p>
+                                    </div>
+                                    <div class="col col-right">
+                                        <p class="bg--white payment--detail">
+                                            CCFRFRPP
+                                        </p>
+                                    </div>
+                                </div>
+                                {{ form_widget(form.data_bank_wire) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="cart__type bg--secondary">
+            <div class="row">
+                <div class="col d-flex align-items-center">
+                    <p class="text-uppercase">Nous acceptons :</p>
+                </div>
+                <div class="col">
+                    <ul class="resetList d-flex align-items-center">
+                        <li class="cart__type__icon pr-4"><img src="{{ asset('/images/payment-visa.png') }}" height="40" width="67" alt="Payment VISA"></li>
+                        <li class="cart__type__icon pr-4"><img src="{{ asset('/images/payment-mastercard.png') }}" height="40" width="67" alt="Payment MasterCard"></li>
+                        <li class="cart__type__icon pr-4"><img src="{{ asset('/images/payment-maestro.png') }}" height="40" width="67" alt="Payment Maestro"></li>
+                        <li class="cart__type__icon"><img src="{{ asset('/images/payment-paypal.png') }}" height="40" width="67" alt="Payment Paypal"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart__submit mt-50 text-right">
+            <button type="submit" class="btn btn-primary arrow-right">Payer {{ order.summary.priceTotal }} €</button>
+        </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+    {{ include('cart/sidebar.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.0.1/jquery.payment.min.js"></script>
+    <script>
+      $(function () {
+        $('#jms_choose_payment_method_data_paybox_number')
+          .formatCardNumber();
+        $('#jms_choose_payment_method_data_paybox_expires')
+          .formatCardExpiry();
+        $('#jms_choose_payment_method_data_paybox_cvv')
+          .formatCardCVC();
+      });
+    </script>
+{% endblock %}

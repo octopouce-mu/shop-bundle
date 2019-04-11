@@ -1,0 +1,60 @@
+<div class="box">
+    <div class="content">
+        <p>
+            <b>E-mail</b><br>
+            <a href="mailto:{{ cart.user.email }}"><i class="far fa-envelope"></i> {{ cart.user.email }}</a>
+        </p>
+        <p>
+            <b>Type</b><br>
+            {{ cart.user.type|trans }}
+        </p>
+        <p>
+            <b>Compte créé</b><br>
+            {{ cart.user.createdAt|date('d/m/Y H:i:s') }}
+        </p>
+    </div>
+</div>
+{% if cart.shipment %}
+<div class="box">
+    <div class="title">Adresse de livraison</div>
+    <div class="content">
+        <p>
+            {{ cart.shipment.firstname }} {{ cart.shipment.lastname }}<br>
+            {% if cart.shipment.company %}
+                {{ cart.shipment.company }}<br>
+            {% endif %}
+            {% if cart.shipment.intraVAT %}
+                Intra TVA : {{ cart.shipment.intraVAT }}<br>
+            {% endif %}
+            {{ cart.shipment.address }}<br>
+            {% if cart.shipment.complementAddress %}
+            {{ cart.shipment.complementAddress }}<br>
+            {% endif %}
+            {{ cart.shipment.postalCode }} {{ cart.shipment.city }} <br>
+            {{ cart.shipment.country }} <br>
+            {{ cart.shipment.phone }}
+        </p>
+    </div>
+</div>
+{% endif %}
+<div class="box">
+    <div class="title">Adresse de facturation</div>
+    <div class="content">
+        <p>
+            {{ cart.billing.firstname }} {{ cart.billing.lastname }}<br>
+            {% if cart.billing.company %}
+                {{ cart.billing.company }}<br>
+            {% endif %}
+            {% if cart.billing.intraVAT %}
+                Intra TVA : {{ cart.billing.intraVAT }}<br>
+            {% endif %}
+            {{ cart.billing.address }}<br>
+            {% if cart.billing.complementAddress %}
+                {{ cart.billing.complementAddress }}<br>
+            {% endif %}
+            {{ cart.billing.postalCode }} {{ cart.billing.city }} <br>
+            {{ cart.billing.country }} <br>
+            {{ cart.billing.phone }}
+        </p>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="box">
+    <div class="content">
+        <p>
+            <b>E-mail</b><br>
+            <a href="mailto:{{ order.user.email }}"><i class="far fa-envelope"></i> {{ order.user.email }}</a>
+        </p>
+        <p>
+            <b>Type</b><br>
+            {{ order.user.type|trans }}
+        </p>
+        <p>
+            <b>Compte créé</b><br>
+            {{ order.user.createdAt|date('d/m/Y H:i:s') }}
+        </p>
+    </div>
+</div>
+{% if order.shipment %}
+<div class="box">
+    <div class="title">Adresse de livraison <span class="sup-right"><a href="{{ path('admin_order_shipment_update', {'number':order.number, 'id':order.shipment.id}) }}" class="orange-text"><i class="far fa-edit"></i></a></span></div>
+    <div class="content">
+        <p>
+            {{ order.shipment.firstname }} {{ order.shipment.lastname }}<br>
+            {% if order.shipment.company %}
+                {{ order.shipment.company }}<br>
+            {% endif %}
+            {% if order.shipment.intraVAT %}
+                Intra TVA : {{ order.shipment.intraVAT }}<br>
+            {% endif %}
+            {{ order.shipment.address }}<br>
+            {% if order.shipment.complementAddress %}
+            {{ order.shipment.complementAddress }}<br>
+            {% endif %}
+            {{ order.shipment.postalCode }} {{ order.shipment.city }} <br>
+            {{ order.shipment.country }} <br>
+            {{ order.shipment.phone }}
+        </p>
+    </div>
+</div>
+{% endif %}
+<div class="box">
+    <div class="title">Adresse de facturation <span class="sup-right"><a href="{{ path('admin_order_billing_update', {'number':order.number, 'id':order.billing.id}) }}" class="orange-text"><i class="far fa-edit"></i></a></span></div>
+    <div class="content">
+        <p>
+            {{ order.billing.firstname }} {{ order.billing.lastname }}<br>
+            {% if order.billing.company %}
+                {{ order.billing.company }}<br>
+            {% endif %}
+            {% if order.billing.intraVAT %}
+                Intra TVA : {{ order.billing.intraVAT }}<br>
+            {% endif %}
+            {{ order.billing.address }}<br>
+            {% if order.billing.complementAddress %}
+                {{ order.billing.complementAddress }}<br>
+            {% endif %}
+            {{ order.billing.postalCode }} {{ order.billing.city }} <br>
+            {{ order.billing.country }} <br>
+            {{ order.billing.phone }}
+        </p>
+    </div>
+</div>

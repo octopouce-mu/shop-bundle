@@ -1,0 +1,79 @@
+{% extends '@OctopouceAdmin/Crud/index.html.twig' %}
+
+{% block main %}
+    <div class="padding-filter">
+        <div class="row title">
+            <div class="col s12">
+                <h1>Commandes</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <p>
+                    <a href="{{ path('admin_order_new') }}" class="waves-effect waves-light btn green"><i class="fas fa-plus"></i> Ajouter une commande</a>
+                </p>
+                <div class="box">
+                    <div class="title">
+                        {{ entities|length }} commandes
+                    </div>
+                    <div class="content">
+                        {% if entities %}
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Référence</th>
+                                    <th>Client</th>
+                                    <th>Livraison</th>
+                                    <th>Articles</th>
+                                    <th>Total</th>
+                                    <th>Paiement</th>
+                                    <th>État</th>
+                                    <th>Date</th>
+                                    <th width="300"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for order in entities %}
+                                    <tr>
+                                        <td>#{{ order.id }}</td>
+                                        <td>{{ order.number }}</td>
+                                        <td><a href="{{ path('octopouce_admin_user_edit', {'id':order.user.id}) }}">{{ order.user.firstname }} {{ order.user.lastname }}</a></td>
+                                        <td>{% if order.shipment %}{{ order.shipment.country|country }}{% else %}Pas de livraison{% endif %}</td>
+                                        <td>{{ order.items|length }}</td>
+                                        <td>{{ order.priceTotal }} €</td>
+                                        <td>{{ order.paymentInstruction.paymentSystemName|trans }}</td>
+                                        <td>
+                                            {% for orderState in order.states %}
+                                                {% if loop.first %}
+                                                    {% if orderState.state.paid %}
+                                                        <span class="new badge green" data-badge-caption="{{ orderState.state.name|trans }}">
+                                                    </span>
+                                                    {% elseif orderState.state.waiting %}
+                                                        <span class="new badge blue" data-badge-caption="{{ orderState.state.name|trans }}">
+                                                    </span>
+                                                    {% else %}
+                                                        <span class="new badge red" data-badge-caption="{{ orderState.state.name|trans }}">
+                                                    </span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td>{{ order.createdAt|date('d/m/Y H:i:s') }}</td>
+                                        <td>
+                                            <a href="{{ path('admin_order_show', {'number':order.number}) }}" class="waves-effect waves-light btn blue">Afficher</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            Pas de contenu.
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'layout-mail.html.twig' %}
+
+{% block content %}
+    Une nouvelle commande (N°{{ order.number }}) vient d'être créé. Voici quelques informations importantes concernant la commande :<br>
+    <br>
+    <br>
+    <b>Numéro de référence</b> : {{ order.number }} <br>
+    <b>Acquéreur</b> : {{ order.user.firstname }} {{ order.user.lastname }} ({{ order.user.email }})<br>
+    <b>Adresse de facturation</b> : <br>
+    {{ order.billing.firstname }} {{ order.billing.lastname }} <br>
+    {{ order.billing.address }} <br>
+    {% if order.billing.complementAddress %}{{ order.billing.complementAddress }}<br>{% endif %}
+    {{ order.billing.postalCode }} {{ order.billing.city }}
+    {{ order.billing.country|country }} <br>
+    {% if order.shipment %}
+        <b>Adresse de livraison</b> : <br>
+        {{ order.shipment.firstname }} {{ order.shipment.lastname }} <br>
+        {{ order.shipment.address }} <br>
+        {% if order.shipment.complementAddress %}{{ order.shipment.complementAddress }}<br>{% endif %}
+        {{ order.shipment.postalCode }} {{ order.shipment.city }}
+        {{ order.shipment.country|country }} <br>
+    {% endif %}
+    <b>Articles</b> : <br>
+    {% for item in order.items %}
+        {% if item.journal %}
+            - Revue n°{{ item.journal.number }} - Format {{ item.type|trans }} <br>
+        {% elseif item.subscription %}
+            - {{ item.subscription.name }} <br>
+        {% endif %}
+    {% endfor %}
+    <b>Total TTC</b> : {{ order.priceTotal }} € <br>
+    <b>Type de paiement</b> : {{ order.paymentInstruction.paymentSystemName|trans }}<br>
+    <br>
+    <br>
+    Vous pouvez retrouver la commande sur l'espace d'administration :
+    <br><br>
+    <div style="text-align: center;">
+        <a href="{{ absolute_url(path('admin_order_show', {'number': order.number})) }}" class="btn btn-secondary">COMMANDE {{ order.number }}</a>
+    </div>
+{% endblock %}

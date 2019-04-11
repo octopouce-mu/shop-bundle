@@ -1,0 +1,21 @@
+<div class="col-3 cart__sidebar order-first order-md-last">
+    <div class="cart__sidebar__border">
+        <div class="cart__sidebar__title bg--primary">
+            <h4>Achat {% if itemsInCart > 1 %}de {{ itemsInCart }} articles{% else %}d'un article{% endif %}</h4>
+        </div>
+        <div class="cart__sidebar__order">
+            {% for item in order.items %}
+                <div class="cart__sidebar__order__item">
+                    <div class="row">
+                        <div class="col col-list col-4"><p>{% if item.journal %}N°{{ item.journal.number }}{% elseif item.subscription %}{{ item.subscription.name }}{% endif %}</p></div>
+                        {% if item.journal %}<div class="col col-list col-4"><p>{% if item.type == 'print' and item.journal %}{{ item.quantity }}{% else %}{{ item.type|trans }}{% endif %}</p></div>{% endif %}
+                        <div class="col col-list col-4 text-right"><p>{{ item.priceTotal }}€</p></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="cart__sidebar__order__total bg--secondary">
+            <h4>Total TTC : {{ order.summary.priceTotal }} €</h4>
+        </div>
+    </div>
+</div>

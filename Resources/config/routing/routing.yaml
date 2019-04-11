@@ -1,0 +1,4 @@
+octopouce_shop_admin:
+    resource: '../../../Controller/Admin'
+    type: annotation
+    prefix: /admin/shop

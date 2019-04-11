@@ -1,0 +1,88 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'cart.checkout'|trans }} - RGCF{% endblock %}
+
+{% block body_class %}page-cart{% endblock %}
+
+{% block content %}
+    <div class="breadcrumb">
+        <ul class="resetList">
+            <li><a href="{{ path('homepage') }}"><i class="iconmoon icon-home"></i></a></li>
+            <li><a href="{{ path('cart_index') }}">{{ 'cart.title'|trans }}</a></li>
+            <li class="active">{{ 'cart.checkout'|trans }}</li>
+        </ul>
+    </div>
+
+    {{ form_start(form) }}
+    {% if form.shipment is defined %}
+    <section class="cart bg--grey-light p-45">
+        <h2 class="color--primary text-uppercase">Vos coordonnées de livraison</h2>
+            {% if app.user.type == 'business' %}
+                <div class="row">
+                    <div class="col">{{ form_row(form.shipment.company) }}</div>
+                    <div class="col">{{ form_row(form.shipment.intraVAT) }}</div>
+                </div>
+            {% endif %}
+            <div class="row">
+                <div class="col col_full-width col_up">{{ form_row(form.shipment.firstname) }}</div>
+                <div class="col col_full-width">{{ form_row(form.shipment.lastname) }}</div>
+            </div>
+            <div class="row">
+                <div class="col">{{ form_row(form.shipment.address) }}</div>
+            </div>
+            <div class="row">
+                <div class="col">{{ form_row(form.shipment.complementAddress) }}</div>
+            </div>
+            <div class="row">
+                <div class="col col_full-width col_up">{{ form_row(form.shipment.postalCode) }}</div>
+                <div class="col col_full-width">{{ form_row(form.shipment.city) }}</div>
+            </div>
+            <div class="row">
+                <div class="col">{{ form_row(form.shipment.country) }}</div>
+            </div>
+            <div class="row">
+                <div class="col">{{ form_row(form.shipment.phone) }}</div>
+            </div>
+    </section>
+    {% endif %}
+    <section class="cart bg--grey-light p-45 mt-20 mb-30">
+        <h2 class="color--primary text-uppercase">Vos coordonnées de facturation</h2>
+
+        {% if app.user.type == 'business' %}
+            <div class="row">
+                <div class="col">{{ form_row(form.billing.company) }}</div>
+                <div class="col">{{ form_row(form.billing.intraVAT) }}</div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col col_full-width col_up">{{ form_row(form.billing.firstname) }}</div>
+            <div class="col col_full-width">{{ form_row(form.billing.lastname) }}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{ form_row(form.billing.address) }}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{ form_row(form.billing.complementAddress) }}</div>
+        </div>
+        <div class="row">
+            <div class="col col_full-width col_up">{{ form_row(form.billing.postalCode) }}</div>
+            <div class="col col_full-width">{{ form_row(form.billing.city) }}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{ form_row(form.billing.country) }}</div>
+        </div>
+        <div class="row">
+            <div class="col">{{ form_row(form.billing.phone) }}</div>
+        </div>
+        <div class="row submit_btn text-right">
+            <div class="col">{{ form_row(form.submit) }}</div>
+        </div>
+
+    </section>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block sidebar %}
+    {{ include('cart/sidebar.html.twig') }}
+{% endblock %}

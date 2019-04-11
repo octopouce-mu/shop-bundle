@@ -1,0 +1,73 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'cart.title'|trans }} - RGCF{% endblock %}
+
+{% block body_class %}page-cart{% endblock %}
+
+{% block content %}
+    <div class="breadcrumb">
+        <ul class="resetList">
+            <li><a href="{{ path('homepage') }}"><i class="iconmoon icon-home"></i></a></li>
+            <li class="active">{{ 'cart.title'|trans }}</li>
+        </ul>
+    </div>
+
+    <section class="cart bg--grey-light p-40">
+        {% if not order or order.items|length > 0 %}
+            {#<div class="text-right">#}
+                {#{{ form(clearForm) }}#}
+            {#</div>#}
+            {% for item in order.items %}
+                <article id="{{ item.id }}" class="bg--white article-pad article-mar journal">
+                    <div class="row">
+                        {% if item.journal %}
+                            <div class="col-3 journal__img">
+                                <div class="bg--grey-light grey-pad">
+                                    <img src="{{ vich_uploader_asset(item.journal, 'imageFile') }}" alt="Couverture revue n°{{ item.journal.number }}" width="100%">
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="col journal__content">
+                            <div class="journal__detail">
+                                {{ render(controller('App\\Controller\\CartController::removeItemForm', {'id':item.id})) }}
+                                <div class="journal__detail__title">
+                                    {% if item.journal %}
+                                        <h3 class="color--primary">{{ 'number'|trans }}  {{ item.journal.number }}</h3>
+                                        <small>{{ item.journal.postedAt|localizeddate('none', 'none', null, null, 'MMMM Y')|capitalize }}</small>
+                                    {% elseif item.subscription %}
+                                        <h3 class="color--primary pr-5">{{ item.subscription.name }}</h3>
+                                    {% endif %}
+                                </div>
+                                <div class="journal__detail__price">
+                                    <p>{% if item.type == 'print' and item.journal %}{{ 'price.unit'|trans }}{% else %}{{ 'price.name'|trans }}{% endif %} : <span class="color--secondary">{{ item.price }} €</span></p>
+                                </div>
+                                <div class="journal__detail__cart">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <p>{{ item.type|trans }}</p>
+                                        </div>
+                                        {% if item.type == 'print' and item.journal %}
+                                            <div class="col">
+                                                {{ render(controller('App\\Controller\\CartController::quantityItemForm', {'id':item.id})) }}
+                                            </div>
+                                        {% endif %}
+                                        <div class="col journal__detail__cart--price"><p class="float-right color--secondary">{{ item.priceTotal }} €</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+                <div class="cart__price bg--secondary total-pad">
+                    <p class="cart__price__total">{{ 'price.total'|trans }} <span class="float-right">{{ order.summary.priceTotal }} €</span></p>
+                    <p class="cart__price__tva"><small>* {{ 'price.tva_include'|trans }}</small></p>
+                </div>
+                <div class="cart__confirm text-right">
+                    <a href="{{ path('cart_checkout') }}" class="btn btn-primary arrow-right">{{ 'cart.confirm'|trans }}</a>
+                </div>
+        {% else %}
+            <p class="cart__no-item">{{ 'cart.empty'|trans }}</p>
+        {% endif %}
+    </section>
+{% endblock %}

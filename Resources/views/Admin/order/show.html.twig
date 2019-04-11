@@ -1,0 +1,78 @@
+{% extends '@OctopouceAdmin/layout.html.twig' %}
+
+{#{% form_theme form '@OctopouceAdmin/Form/layout.html.twig' %}#}
+
+{% block title %}Commande {{ order.number }} de {{ order.user.firstname }} {{ order.user.lastname }} - {{ parent() }}{% endblock %}
+
+{% block main %}
+    <div class="padding-filter">
+        <div class="row title">
+            <div class="col s12">
+                <h1>Commande {{ order.number }} de {{ order.user.firstname }} {{ order.user.lastname }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4">
+                <div class="box">
+                    <div class="title center">
+                        {{ order.createdAt|date('d/m/Y') }}
+                    </div>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="box">
+                    <div class="title center">
+                        {{ order.priceTotal }} €
+                    </div>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="box">
+                    <div class="title center">
+                        {{ order.itemsTotal }} produits
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s7">
+                <div class="box">
+                    <div class="title">
+                        #{{ order.id }} - Commande {{ order.number }}{% if order.payIt %} - Payé le {{ order.payIt|date('d/m/Y H:i') }}{% else %} - Non payé{% endif %}
+                    </div>
+                    <div class="content">
+                        {{ include('admin/order/show/order.html.twig') }}
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="title">Paiements</div>
+                    <div class="content">
+                        {{ include('admin/order/show/payment.html.twig') }}
+                    </div>
+                </div>
+            </div>
+            <div class="col s5">
+                <div class="box">
+                    <div class="title">
+                        Client {{ order.user.firstname }} {{ order.user.lastname }} - #{{ order.user.id }} <span class="sup-right"><a href="{{ path('octopouce_admin_user_edit', {'id':order.user.id}) }}" class="orange-text"><i class="far fa-edit"></i></a></span>
+                    </div>
+                    <div class="content">
+                        {{ include('admin/order/show/client.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="box">
+                    <div class="title">
+                        Produits <span class="sup-right"><a href="{{ path('admin_order_item_new', {'number':order.number}) }}" class="waves-effect waves-light btn-small green white-text"><i class="fas fa-plus"></i></a></span>
+                    </div>
+                    <div class="content">
+                        {{ include('admin/order/show/products.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

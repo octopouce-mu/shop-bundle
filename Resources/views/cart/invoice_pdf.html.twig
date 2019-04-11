@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{{ invoice.order.user }} - Facture #{{ invoice.number }}{% endblock %}</title>
+</head>
+
+<style type="text/css" media="all">
+    {% block style %}
+    body {margin: 50px;padding: 0;font: 12px Arial}
+    #container {margin: 0 auto; width: 680px}
+    #seller {margin: 25px; width: 620px;clear: both;}
+    #invoice, #invoice-total {float: right; width: 300px; margin-bottom: 30px}
+    #invoice dt, #invoice-total dt {float: left; width: 100px; margin-bottom: 4px}
+    #invoice dd, #invoice-total dd {float: right; width: 184px; margin: 0 0 4px; text-align: right}
+    .invoice-total {float: left;font-weight: bold;margin: 0;padding: 5px 8px;border-top: 1px solid #f1f1f1;background:#e3e3e3}
+    #buyer {float: left; width: 300px}
+    #invoice-total {clear: both;}
+    #terms, #notes {float: left;width: 100%;margin: 10px 0}
+    table {width: 100%}
+    table thead tr {padding: 10px 5px;border: 1px solid #c7c7c7;font-weight: bold;}
+    table thead th {border-top: 1px solid #f1f1f1;background:#e3e3e3}
+    table tbody tr {padding: 10px 5px;border-bottom:1px solid #e5e5e5;}
+    .col1 {width: 50%; text-align: left}
+    .col2 {width: 10%; text-align: right}
+    .col3 {width: 20%; text-align: right}
+    .col4 {width: 20%; text-align: right}
+    {% endblock %}
+</style>
+
+<body>
+
+<div id="container">
+    <div id="seller">
+        {{ invoice.address|raw }}
+    </div>
+
+    <div id="invoice">
+        <dl>
+            <dd>{{ invoice.number }}</dd>
+            <dt>Facture #</dt>
+
+            <dd>{{ invoice.createdAt|date('F j, Y') }}</dd>
+            <dt>Date</dt>
+        </dl>
+    </div>
+
+    <div id="buyer">
+        {{ invoice.addressClient|raw }}
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th class="col1">Nom</th>
+            <th class="col2">Quantité</th>
+            <th class="col3">Prix Unitaire</th>
+            <th class="col4">Total TTC</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            {% for item in invoice.items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td class="col2">{{ item.quantity }}</td>
+                    <td class="col3">{{ item.price }}</td>
+                    <td class="col4">{{ item.total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <div id="invoice-total">
+        <dl class="invoice-total">
+            <dt>Total TTC</dt>
+            <dd>&euro; {{ invoice.priceTotal }} EUR</dd>
+        </dl>
+    </div>
+
+    {#<div id="terms">#}
+        {#<strong>Terms:</strong>#}
+        {#<p>{{ invoice.terms|default('-') }}</p>#}
+    {#</div>#}
+
+    {#<div id="notes">#}
+        {#<strong>Notes:</strong>#}
+        {#<p>{{ invoice.notes|default('-') }}</p>#}
+    {#</div>#}
+</div>
+
+</body>

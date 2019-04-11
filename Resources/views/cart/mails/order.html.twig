@@ -1,0 +1,57 @@
+{% extends 'layout-mail.html.twig' %}
+
+{% block content %}
+    Merci d'avoir passé commande sur notre site. Voici quelques informations importantes concernant votre commande :<br>
+    <br>
+    <br>
+    <b>Numéro de référence</b> : {{ order.number }} <br>
+    <b>Acquéreur</b> : {{ order.user.firstname }} {{ order.user.lastname }} <br>
+    <b>Adresse de facturation</b> : <br>
+    {{ order.billing.firstname }} {{ order.billing.lastname }} <br>
+    {{ order.billing.address }} <br>
+    {% if order.billing.complementAddress %}{{ order.billing.complementAddress }}<br>{% endif %}
+    {{ order.billing.postalCode }} {{ order.billing.city }}
+    {{ order.billing.country|country }} <br>
+    {% if order.shipment %}
+        <b>Adresse de livraison</b> : <br>
+        {{ order.shipment.firstname }} {{ order.shipment.lastname }} <br>
+        {{ order.shipment.address }} <br>
+        {% if order.shipment.complementAddress %}{{ order.shipment.complementAddress }}<br>{% endif %}
+        {{ order.shipment.postalCode }} {{ order.shipment.city }}
+        {{ order.shipment.country|country }} <br>
+    {% endif %}
+    <b>Articles</b> : {{ order.items|length }}<br>
+    <b>Total TTC</b> : {{ order.priceTotal }} € <br>
+    <b>Type de paiement</b> : {{ order.paymentInstruction.paymentSystemName|trans }}<br>
+    <br>
+    <br>
+    {% if order.paymentInstruction.paymentSystemName != 'paybox' %}
+        {% if order.paymentInstruction.paymentSystemName == 'check' %}
+            Vous avez choisi un paiement par chèque. La commande sera validée une fois le chèque réceptionné. Envoyez le chèque à cette adresse à l'ordre de Éditions RGRA - RGCF :
+            <br><br>
+            Éditions RGRA – RGCF <br>
+            9 rue de Berri <br>
+            75008 Paris <br>
+            France
+        {% elseif order.paymentInstruction.paymentSystemName == 'bank_wire' %}
+            Vous avez choisi un paiement par virement bancaire. La commande sera validée une fois le virement réceptionné. Le virement est à faire au bénéfice de :
+            <br><br>
+            <b>Titulaire du compte</b> : Éditions RGRA - RGCF <br>
+            <b>Domiciliation</b> : HSBC <br>
+            <b>Banque</b> : 30056 <br>
+            <b>Guichet</b> : 00728 <br>
+            <b>Compte</b> : 0728 368 3394 <br>
+            <b>IBAN</b> : FR76 3005 6007 2807 2836 8339 467 <br>
+            <b>BIC</b> : CCFRFRPP
+        {% endif %}
+    <br>
+    <br>
+    {% endif %}
+    Vous pouvez retrouver votre commande et voir son statut sur votre espace compte :
+    <br><br>
+    <div style="text-align: center;">
+        <a href="{{ absolute_url(path('account_order')) }}" class="btn btn-secondary">MES COMMANDES</a>
+    </div>
+    <br>
+    Notez votre numéro de référence pour toute réclamation : {{ order.number }}.
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'layout-mail.html.twig' %}
+
+{% block content %}
+    Ci-joint vous trouverez votre facture n°{{ invoice.number }} correspondant à votre commande n°{{ invoice.order.number }} de {{ invoice.order.priceTotal }} €.
+    <br><br>
+    Vous pouvez retrouver votre facture et votre commande sur votre <a href="{{ absolute_url(path('account_order')) }}"> espace de compte</a> et accéder à vos
+        <a href="{{ absolute_url(path('account_journal')) }}">revues</a>.
+{% endblock %}

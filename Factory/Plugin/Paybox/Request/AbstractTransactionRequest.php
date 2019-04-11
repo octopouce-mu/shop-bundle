@@ -1,0 +1,68 @@
+<?php
+
+/*
+ * This file is part of the Nexylan packages.
+ *
+ * (c) Nexylan SAS <contact@nexylan.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Octopouce\ShopBundle\Factory\Plugin\Paybox\Request;
+
+use Greg0ire\Enum\Bridge\Symfony\Validator\Constraint\Enum;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ */
+abstract class AbstractTransactionRequest extends AbstractRequest
+{
+    /**
+     * @var int
+     *
+     * @Assert\Type("int")
+     */
+    private $amount;
+
+    /**
+     * @var int|null
+     *
+     * @Enum(class="Octopouce\ShopBundle\Factory\Plugin\Paybox\Enum\Currency", showKeys=true)
+     */
+    private $currency = null;
+
+    /**
+     * @param int         $amount
+     * @param string|null $subscriberRef
+     */
+    public function __construct($amount, $subscriberRef = null)
+    {
+        parent::__construct($subscriberRef);
+
+        $this->amount = $amount;
+    }
+
+    /**
+     * @param int $currency
+     *
+     * @return $this
+     */
+    final public function setCurrency($currency = null)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    public function getParameters()
+    {
+        $parameters = [
+            'MONTANT' => $this->amount,
+            'DEVISE' => $this->currency,
+        ];
+
+        return array_merge(parent::getParameters(), $parameters);
+    }
+}

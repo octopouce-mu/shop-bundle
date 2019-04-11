@@ -1,0 +1,119 @@
+{% extends '@OctopouceAdmin/layout.html.twig' %}
+
+{#{% form_theme form '@OctopouceAdmin/Form/layout.html.twig' %}#}
+
+{% block title %}Panier {{ cart.id }} - {{ parent() }}{% endblock %}
+
+{% block main %}
+    <div class="padding-filter">
+        <div class="row title">
+            <div class="col s12">
+                <h1>Commande {{ cart.number }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4">
+                <div class="box">
+                    <div class="title center">
+                        {{ cart.createdAt|date('d/m/Y') }}
+                    </div>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="box">
+                    <div class="title center">
+                        {{ cart.priceTotal }} €
+                    </div>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="box">
+                    <div class="title center">
+                        {{ cart.itemsTotal }} produits
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s7">
+                <div class="box">
+                    <div class="title">
+                    Panier  #{{ cart.id }}
+                    </div>
+                    <div class="content">
+                        {{ include('admin/cart/show/history.html.twig') }}
+                    </div>
+                </div>
+                {% if cart.number and cart.states %}
+                    <div class="box">
+                        <div class="title">
+                            État de la commande {{ cart.number }} <span class="sup-right"><a href="{{ path('admin_order_show', {'number':cart.number}) }}" class="orange-text"><i class="far fa-edit"></i></a></span>
+                        </div>
+                        <div class="content">
+                            <table>
+                                <tbody>
+                                {% for orderState in cart.states %}
+                                    <tr {% if orderState.state.name == 'state.payment_accepted' %}class="green"{% endif %}>
+                                        <td>{{ orderState.state.name|trans }}</td>
+                                        <td>{{ orderState.createdAt|date('d/m/Y H:i:s') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="box">
+                        <div class="title">État du panier</div>
+                        <div class="content">
+                            {% if cart.number %}
+                                <span class="green">
+                                    Transformer en commande
+                                </span>
+                            {% elseif cart.billing and not cart.number %}
+                                <span class="blue">
+                                    Checkout non fini
+                                </span>
+                            {% else %}
+                                <span class="red">Abandonner</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            {% if cart.user %}
+                <div class="col s5">
+                    <div class="box">
+                        <div class="title">
+                            Client {{ cart.user.firstname }} {{ cart.user.lastname }} - #{{ cart.user.id }} <span class="sup-right"><a href="{{ path('octopouce_admin_user_edit', {'id':cart.user.id}) }}" class="orange-text"><i class="far fa-edit"></i></a></span>
+                        </div>
+                        <div class="content">
+                            {{ include('admin/cart/show/client.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+                <div class="col s5">
+                    <div class="box">
+                        <div class="title">
+                            Pas de client relié à ce panier
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <div class="box">
+                    <div class="title">
+                        Produits
+                    </div>
+                    <div class="content">
+                        {{ include('admin/cart/show/products.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
